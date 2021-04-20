@@ -119,7 +119,7 @@ def main():
             sys.exit()
         if len(video_devices) > 1:
             subprocess.check_call(["v4l2-ctl", "--list-devices"])
-            LOG.warning("multiple video devices found, please specify id")
+            LOG.warning("multiple video devices found, please specify -i <id>")
             sys.exit()
         else:
             video_device_id = int(video_devices[0][-1])
