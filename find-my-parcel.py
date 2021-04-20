@@ -6,6 +6,7 @@ import sys
 import time
 import logging
 import glob
+from collections import OrderedDict
 
 import cv2
 from pyzbar import pyzbar
@@ -18,22 +19,31 @@ def normlize_barcode(barcode):
 
 
 def speak(words):
-    os.system("espeak -a 100 {}".format(words))
+    os.system("espeak -a 150 {}".format(words))
 
 
 def load_parcels():
     root = "parcels/"
-    parcels = {}
+    items = []  # [(code0, owner0), (code1, owner1), ...]
+    stats = {}
     for filename in os.listdir(root):
-        filepath = os.path.join(root, filename)
-        owner = filename.split(".")[0]
-        with open(filepath) as fileobj:
-            for line in fileobj:
-                line = line.strip()
-                if line and not line.startswith("#"):
-                    barcode = normlize_barcode(line.split()[0])
-                    parcels[barcode] = owner
-    return parcels
+        if filename.endswith(".txt"):
+            filepath = os.path.join(root, filename)
+            if os.path.isfile(filepath) and not filepath.startswith("."):
+                owner = filename.split(".")[0]
+                count = 0
+                with open(filepath) as fileobj:
+                    for line in fileobj:
+                        line = line.strip()
+                        if line and not line.startswith("#"):
+                            barcode = normlize_barcode(line.split()[0])
+                            items.append((barcode, owner))
+                            count += 1
+                stats[owner] = count
+    for owner, count in stats.items():
+        print("{}: {}".format(owner, count))
+    ordered_items = sorted(items, key=lambda item: len(item[0]), reverse=True)
+    return OrderedDict(ordered_items)
 
 
 def find_owner(parcels, raw_barcode, unknown="unknown"):
