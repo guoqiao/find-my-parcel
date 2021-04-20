@@ -17,6 +17,10 @@ def normlize_barcode(barcode):
     return barcode.strip().upper().replace("-", "")
 
 
+def speak(words):
+    os.system("espeak -a 100 {}".format(words))
+
+
 def load_parcels():
     root = "parcels/"
     parcels = {}
@@ -30,10 +34,6 @@ def load_parcels():
                     barcode = normlize_barcode(line.split()[0])
                     parcels[barcode] = owner
     return parcels
-
-
-def speak(words):
-    os.system("espeak -a 100 {}".format(words))
 
 
 def find_owner(parcels, raw_barcode, unknown="unknown"):
