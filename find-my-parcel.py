@@ -41,6 +41,7 @@ def load_parcels():
                             items.append((barcode, owner))
                             count += 1
                 stats[owner] = count
+    print("total: {}".format(len(items)))
     for owner, count in stats.items():
         print("{}: {}".format(owner, count))
     ordered_items = sorted(items, key=lambda item: len(item[0]), reverse=True)
