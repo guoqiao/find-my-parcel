@@ -65,7 +65,7 @@ def read_barcodes(frame, parcels):
         cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)
         owner = find_owner(parcels, barcode_info)
         speak(owner)
-        time.sleep(2.0)
+        time.sleep(1.0)
     return frame
 
 
