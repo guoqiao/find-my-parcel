@@ -7,6 +7,7 @@ import time
 import logging
 import glob
 from collections import OrderedDict
+import subprocess
 
 import cv2
 from pyzbar import pyzbar
@@ -19,7 +20,7 @@ def normlize_barcode(barcode):
 
 
 def speak(words):
-    os.system("espeak -a 150 {}".format(words))
+    subprocess.check_call(["espeak", "-a", "150", words])
 
 
 def load_parcels():
@@ -116,7 +117,7 @@ def main():
             LOG.error("no video device found, exit")
             sys.exit()
         if len(video_devices) > 1:
-            os.system("v4l2-ctl --list-devices")
+            subprocess.check_call(["v4l2-ctl", "--list-devices"])
             LOG.warning("multiple video devices found, please specify id")
             sys.exit()
         else:
