@@ -105,9 +105,12 @@ def main():
         if not video_devices:
             LOG.error("no video device found, exit")
             sys.exit()
-        video_device_id = int(video_devices[0][-1])
         if len(video_devices) > 1:
-            LOG.warning("multiple video devices found, 1st one used: {}".format(video_devices))
+            os.system("v4l2-ctl --list-devices")
+            LOG.warning("multiple video devices found, please specify id")
+            sys.exit()
+        else:
+            video_device_id = int(video_devices[0][-1])
 
     camera = cv2.VideoCapture(video_device_id)
     ret, frame = camera.read()
