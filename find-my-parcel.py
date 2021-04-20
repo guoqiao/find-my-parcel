@@ -58,17 +58,19 @@ def find_owner(parcels, raw_barcode, unknown="unknown"):
         return owner
 
     # loaded barcode is partial of scanned barcode
+    # match tail
+    for item, owner in parcels.items():
+        if barcode.endswith(item):
+            LOG.info("barcode tail match: {} -> {} -> {}".format(barcode, item, owner))
+            return owner
+
     # match head
     for item, owner in parcels.items():
         if barcode.startswith(item):
             LOG.info("barcode head match: {} -> {} -> {}".format(barcode, item, owner))
             return owner
 
-    for item, owner in parcels.items():
-        if barcode.endswith(item):
-            LOG.info("barcode tail match: {} -> {} -> {}".format(barcode, item, owner))
-            return owner
-
+    # match middle
     for item, owner in parcels.items():
         if item in barcode:
             LOG.info("barcode middle match: {} -> {} -> {}".format(barcode, item, owner))
