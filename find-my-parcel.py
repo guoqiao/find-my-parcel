@@ -20,7 +20,7 @@ def normlize_barcode(barcode):
 
 
 def speak(words):
-    subprocess.check_call(["espeak", "-a", "150", words])
+    subprocess.check_call(["espeak", "-a", "200", words])
 
 
 def load_parcels():
